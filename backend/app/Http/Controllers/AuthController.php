@@ -26,14 +26,16 @@ class AuthController extends Controller
         try {
             $parameters = $request->validated();
 
-            /** @var User $user */
-            $user = $this->userService->create([
+            $this->userService->create([
                 'name' => $parameters['name'],
                 'email' => $parameters['email'],
                 'password' => Hash::make($parameters['password'])
             ]);
 
-            $user->token = $user->createToken("innoscripta")->plainTextToken;
+            /** @var User $user */
+            $user = $this->userService->createToken([
+                'email' => $parameters['email'],
+            ]);
 
             return new RegisterResource($user);
         } catch (\Throwable $throwable) {
@@ -57,11 +59,9 @@ class AuthController extends Controller
             }
 
             /** @var User $user */
-            $user = $this->userService->first([
+            $user = $this->userService->createToken([
                 'email' => $parameters['email'],
             ]);
-
-            $user->token = $user->createToken("innoscripta")->plainTextToken;
 
             return new LoginResource($user);
         } catch (\Throwable $throwable) {
