@@ -7,7 +7,7 @@ ARG NODE_VERSION=16
 ARG POSTGRES_VERSION=14
 
 # Set working directory
-WORKDIR /var/www/innoscripta/
+WORKDIR /var/www/innoscripta-backend/
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV TZ=UTC
@@ -71,7 +71,7 @@ RUN docker-php-ext-install \
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Copy existing application directory contents to the working directory
-COPY . /var/www/innoscripta
+COPY . /var/www/innoscripta-backend
 RUN chgrp -R www-data storage bootstrap/cache
 RUN chmod -R ug+rwx storage bootstrap/cache
 

@@ -10,6 +10,7 @@ services:
         volumes:
             - ./backend/.cloud/docker.conf:/usr/local/etc/php-fpm.d/docker.conf
             - ./backend/public/storage:/var/www/innoscripta-backend/public/storage
+            - ./backend:/var/www/innoscripta-backend
         networks:
             - innoscripta
         depends_on:
