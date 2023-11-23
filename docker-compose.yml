@@ -1,0 +1,66 @@
+version: '3'
+services:
+    backend:
+        build:
+            context: backend
+            dockerfile: .cloud/Dockerfile
+        container_name: backend
+        restart: unless-stopped
+        tty: true
+        volumes:
+            - ./backend/.cloud/docker.conf:/usr/local/etc/php-fpm.d/docker.conf
+            - ./backend/public/storage:/var/www/innoscripta-backend/public/storage
+        networks:
+            - innoscripta
+        depends_on:
+            - pgsql
+            - webserver
+    frontend:
+        build:
+            context: frontend
+            dockerfile: .cloud/Dockerfile
+        container_name: frontend
+        restart: unless-stopped
+        ports:
+            - "4173:4173"
+        tty: true
+        networks:
+            - innoscripta
+        depends_on:
+            - backend
+            - pgsql
+            - webserver
+    webserver:
+        image: nginx:alpine
+        container_name: webserver
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./.cloud/nginx/conf.d/:/etc/nginx/conf.d/
+        networks:
+            - innoscripta
+    pgsql:
+        image: 'postgres:16-alpine3.17'
+        ports:
+            - '${FORWARD_DB_PORT:-5433}:5432'
+        environment:
+            POSTGRES_DB: "innoscripta"
+            POSTGRES_USER: "innoscripta"
+            POSTGRES_PASSWORD: "123123123"
+        volumes:
+            - 'innoscripta-pgsql:/var/lib/postgresql/data'
+        networks:
+            - innoscripta
+        healthcheck:
+            test: ["CMD", "pg_isready", "-q", "-d", "innoscripta", "-U", "innoscripta"]
+            retries: 3
+            timeout: 5s
+networks:
+    innoscripta:
+        driver: bridge
+volumes:
+    innoscripta-pgsql:
+        driver: local
