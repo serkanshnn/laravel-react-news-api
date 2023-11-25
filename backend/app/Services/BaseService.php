@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Nette\NotImplementedException;
 
 class BaseService implements BaseServiceInterface {
@@ -30,8 +31,20 @@ class BaseService implements BaseServiceInterface {
         return $this->model->updateOrCreate($filters, $parameters);
     }
 
-    public function first(array $parameters): Model
+    public function first(array $parameters): ?Model
     {
         return $this->model->where($parameters)->first();
+    }
+
+    public function fetchAll($columns = ['*'], $orderKey = 'id', $sort = 'ASC'): Collection
+    {
+        return $this->model->orderBy($orderKey, $sort)->get($columns);
+    }
+
+    public function destroy(array $parameters): bool
+    {
+        $model = $this->model::where($parameters)->first();
+
+        return $model->delete();
     }
 }
