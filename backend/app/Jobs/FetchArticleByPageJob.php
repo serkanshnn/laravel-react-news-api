@@ -2,11 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Models\Article;
-use App\Models\Author;
-use App\Models\Source;
+use App\Services\ArticleServiceInterface;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -19,6 +16,8 @@ class FetchArticleByPageJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected ArticleServiceInterface $articleService;
+
     /**
      * Create a new job instance.
      */
@@ -30,13 +29,15 @@ class FetchArticleByPageJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
+    public function handle(ArticleServiceInterface $articleService): void
     {
+        $this->articleService = $articleService;
+
         if (count($this->data)) {
             $this->storeArticle($this->data);
 
             if ($this->page < $this->total_page) {
-                FetchArticleByPageJob::dispatch($this->site, $this->page + 1);
+                FetchArticleByPageJob::dispatch($this->site, $this->page + 1, $this->total_page);
             }
         } else if ($this->page) {
             try {
@@ -66,28 +67,7 @@ class FetchArticleByPageJob implements ShouldQueue
     {
         foreach ($data as $result) {
             $article = $this->mapArticleItem($result, $this->site);
-            $source = null;
-            $author = null;
-
-            if ($article['source_name']) {
-                $source = Source::query()->updateOrCreate(['name' => $article['source_name']], ['name' => $article['source_name']]);
-            }
-
-            if ($article['author_name']) {
-                $author = Author::query()->updateOrCreate(['name' => $article['author_name']], ['name' => $article['author_name']]);
-            }
-
-
-            Article::query()->updateOrCreate(['title' => $article['title']],
-                [
-                    'url' => $article['url'],
-                    'description' => $article['description'],
-                    'content' => $article['content'],
-                    'image_url' => $article['image_url'],
-                    'published_at' => $article['published_at'],
-                    'author_id' => $author?->id,
-                    'source_id' => $source?->id,
-                ]);
+            $this->articleService->updateOrCreate(['title' => $article['title']], $article);
         }
     }
 
