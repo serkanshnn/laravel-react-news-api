@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::post('register', [\App\Http\Controllers\AuthController::class, 'register'])->name('register');
 Route::post('login', [\App\Http\Controllers\AuthController::class, 'login'])->name('login');
+Route::get('articles', [\App\Http\Controllers\ArticleController::class, 'index'])->name('articles.index');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
@@ -22,7 +23,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('authors', [\App\Http\Controllers\AuthorController::class, 'index'])->name('author.index');
     Route::get('sources', [\App\Http\Controllers\SourceController::class, 'index'])->name('source.index');
     Route::get('categories', [\App\Http\Controllers\CategoryController::class, 'index'])->name('category.index');
-    Route::get('articles', [\App\Http\Controllers\ArticleController::class, 'index'])->name('articles.index');
     Route::get('articles/{id}', [\App\Http\Controllers\ArticleController::class, 'show'])->name('articles.show');
     Route::get('feed', [\App\Http\Controllers\ArticleController::class, 'personalizedArticles'])->name('articles.personalizedArticles');
     Route::post('favorites', [\App\Http\Controllers\UserFavoriteController::class, 'createOrDelete'])->name('favorite.createOrDelete');
