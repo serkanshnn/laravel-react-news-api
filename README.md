@@ -14,9 +14,8 @@ This project is an example project made using Laravel and React to pull articles
 - theguardian
 - nytimes
 
-Design inspired by: https://dribbble.com/shots/3138126-Mongollist-News
-
-##### Example record:
+##### Design inspired by: https://dribbble.com/shots/3138126-Mongollist-News
+##### Example record: 
 ##### Demo:
 
 ## Installation and configuration:
@@ -35,8 +34,9 @@ You can connect the backend service with this code
 ```
 docker exec -it backend sh
 ```
-and run this
+and run these
 ```
+composer install
 php artisan migrate
 ```
 To configure nginx file, open `.cloud/nginx/conf.d/default.conf` and make your configuration in it.

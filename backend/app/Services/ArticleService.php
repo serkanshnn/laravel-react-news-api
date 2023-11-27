@@ -33,6 +33,7 @@ class ArticleService extends BaseService implements ArticleServiceInterface
     {
         $source = null;
         $author = null;
+        $category = null;
 
         if ($parameters['source_name']) {
             $source = $this->sourceService->updateOrCreate(['name' => $parameters['source_name']], ['name' => $parameters['source_name']]);
@@ -43,7 +44,7 @@ class ArticleService extends BaseService implements ArticleServiceInterface
         }
 
         if ($parameters['category_name']) {
-            $category = $this->categoryService->updateOrCreate(['name' => $parameters['author_name']], ['name' => $parameters['author_name']]);
+            $category = $this->categoryService->updateOrCreate(['name' => $parameters['category_name']], ['name' => $parameters['category_name']]);
         }
 
 
@@ -51,7 +52,7 @@ class ArticleService extends BaseService implements ArticleServiceInterface
             [
                 'url' => $parameters['url'],
                 'description' => $parameters['description'],
-                'content' => $parameters['content'],
+                'content' => $parameters['content'] ?? $filters['title'],
                 'image_url' => $parameters['image_url'],
                 'published_at' => $parameters['published_at'],
                 'author_id' => $author?->id,
