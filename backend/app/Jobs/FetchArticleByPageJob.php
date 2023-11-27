@@ -77,6 +77,10 @@ class FetchArticleByPageJob implements ShouldQueue
 
         foreach ($site['meta']['item_mapper'] as $key => $value) {
             $article[$key] = $value ? Arr::get($item, $site['meta']['item_mapper'][$key]) : null;
+
+            if ($site['key'] === 'newsapi' && $key === 'category_name') {
+                $article[$key] = $site['meta']['item_mapper'][$key];
+            }
         }
 
         return $article;

@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserFavoriteCreateResource extends JsonResource
+class CategoryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,8 +16,7 @@ class UserFavoriteCreateResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => new UserResource($this->user),
-            'related' => $this->related_type instanceof SourceResource ? new SourceResource($this->related): new AuthorResource($this->related),
+            'name' => $this->name
         ];
     }
 }

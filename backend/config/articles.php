@@ -3,13 +3,14 @@
 return [
     'sites' => [
         [
-            'url' => 'https://newsapi.org/v2/everything',
+            'key' => 'newsapi',
+            'url' => 'https://newsapi.org/v2/top-headlines',
             'api_key' => env('NEWSAPI_API_KEY'),
             'query' => [
                 'sortBy' => 'publishedAt',
                 'apiKey' => env('NEWSAPI_API_KEY'),
                 'from' => \Carbon\Carbon::now()->subDay()->format('Y-m-d'),
-                'q' => 'technology'
+                'category' => 'technology'
             ],
             'meta' => [
                 'response_key' => 'articles',
@@ -25,10 +26,12 @@ return [
                     'published_at' => 'publishedAt',
                     'source_name' => 'source.name',
                     'author_name' => 'author',
+                    'category_name' => 'Technology',
                 ]
             ]
         ],
         [
+            'key' => 'theguardian',
             'url' => 'https://content.guardianapis.com/search',
             'api_key' => env('THEGUARDIAN_API_KEY'),
             'query' => [
@@ -51,10 +54,12 @@ return [
                     'published_at' => 'webPublicationDate',
                     'source_name' => 'publication',
                     'author_name' => 'fields.byline',
+                    'category_name' => 'sectorName',
                 ]
             ]
         ],
         [
+            'key' => 'nytimes',
             'url' => 'https://api.nytimes.com/svc/search/v2/articlesearch.json',
             'api_key' => env('NYTIMES_API_KEY'),
             'query' => [
@@ -76,6 +81,7 @@ return [
                     'published_at' => 'pub_date',
                     'source_name' => 'source',
                     'author_name' => 'byline.original',
+                    'category_name' => 'sector_name',
                 ]
             ]
         ],

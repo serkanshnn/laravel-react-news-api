@@ -53,4 +53,9 @@ class User extends Authenticatable
     {
         return $this->morphedByMany(Source::class, 'related', 'user_favorites');
     }
+
+    public function categories(): MorphToMany
+    {
+        return $this->morphedByMany(Category::class, 'related', 'user_favorites');
+    }
 }

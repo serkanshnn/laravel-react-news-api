@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserFavoriteCreateRequest;
-use App\Http\Requests\UserFavoriteDestroyRequest;
-use App\Http\Resources\UserFavoriteCreateResource;
 use App\Http\Resources\UserFavoriteResource;
+use App\Models\Article;
 use App\Services\UserFavoriteServiceInterface;
 use Illuminate\Http\Request;
 
@@ -18,15 +17,6 @@ class UserFavoriteController extends Controller
         $this->userFavoriteService = $userFavoriteService;
     }
 
-    public function store(UserFavoriteCreateRequest $request)
-    {
-        $parameters = $request->validationData();
-
-        $result = $this->userFavoriteService->updateOrCreate($parameters, $parameters);
-
-        return new UserFavoriteCreateResource($result);
-    }
-
     public function fetchUserFavorites()
     {
         $user = auth()->user();
@@ -34,7 +24,7 @@ class UserFavoriteController extends Controller
         return new UserFavoriteResource($user);
     }
 
-    public function destroy(UserFavoriteDestroyRequest $request)
+    public function createOrDelete(UserFavoriteCreateRequest $request)
     {
         $parameters = $request->validationData();
         $userFavorite = $this->userFavoriteService->first($parameters);
@@ -42,9 +32,9 @@ class UserFavoriteController extends Controller
         if ($userFavorite) {
             $result = $this->userFavoriteService->destroy($parameters);
         } else {
-            $result = true;
+            $result = $this->userFavoriteService->create($parameters);
         }
 
-        return response()->json($result);
+        return response()->json(!!$result);
     }
 }

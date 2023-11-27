@@ -17,6 +17,7 @@ class UserFavoriteResource extends JsonResource
         return [
             'authors' => AuthorResource::collection($this->authors),
             'sources' => SourceResource::collection($this->sources),
+            'categories' => CategoryResource::collection($this->categories),
         ];
     }
 }
