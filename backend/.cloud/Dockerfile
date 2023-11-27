@@ -76,7 +76,7 @@ RUN chgrp -R www-data storage bootstrap/cache
 RUN chmod -R ug+rwx storage bootstrap/cache
 
 RUN mkdir -p /var/log/supervisor
-COPY .cloud/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY .cloud/supervisord.conf /etc/supervisor/supervisord.conf
 
 # Expose port 9000 and start php-fpm server (for FastCGI Process Manager)
 EXPOSE 9000
