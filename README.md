@@ -15,8 +15,8 @@ This project is an example project made using Laravel and React to pull articles
 - nytimes
 
 ##### Design inspired by: https://dribbble.com/shots/3138126-Mongollist-News
-##### Example record: 
-##### Demo:
+##### Example record: https://www.loom.com/share/fcc1a53d2cf248408a22ae166c89885b
+##### Demo: https://news-app.serkan.space
 
 ## Installation and configuration:
 In this project, we orchestrated multiple containers using docker compose.
