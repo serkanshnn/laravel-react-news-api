@@ -18,7 +18,7 @@ class UserService extends BaseService implements UserServiceInterface {
             'email' => $parameters['email'],
         ]);
 
-        $user->token = $user->createToken("innoscripta")->plainTextToken;
+        $user->token = $user->createToken("news-app")->plainTextToken;
 
         return $user;
     }

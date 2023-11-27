@@ -9,10 +9,10 @@ services:
         tty: true
         volumes:
             - ./backend/.cloud/docker.conf:/usr/local/etc/php-fpm.d/docker.conf
-            - ./backend/public/storage:/var/www/innoscripta-backend/public/storage
-            - ./backend:/var/www/innoscripta-backend
+            - ./backend/public/storage:/var/www/news-app-backend/public/storage
+            - ./backend:/var/www/news-app-backend
         networks:
-            - innoscripta
+            - news-app
         depends_on:
             - pgsql
             - webserver
@@ -26,7 +26,7 @@ services:
             - "4173:4173"
         tty: true
         networks:
-            - innoscripta
+            - news-app
         depends_on:
             - backend
             - pgsql
@@ -42,26 +42,27 @@ services:
         volumes:
             - ./.cloud/nginx/conf.d/:/etc/nginx/conf.d/
         networks:
-            - innoscripta
+            - news-app
     pgsql:
         image: 'postgres:16-alpine3.17'
+        container_name: pgsql
         ports:
             - '${FORWARD_DB_PORT:-5433}:5432'
         environment:
-            POSTGRES_DB: "innoscripta"
-            POSTGRES_USER: "innoscripta"
+            POSTGRES_DB: "news-app"
+            POSTGRES_USER: "news-app"
             POSTGRES_PASSWORD: "123123123"
         volumes:
-            - 'innoscripta-pgsql:/var/lib/postgresql/data'
+            - 'news-app-pgsql:/var/lib/postgresql/data'
         networks:
-            - innoscripta
+            - news-app
         healthcheck:
-            test: ["CMD", "pg_isready", "-q", "-d", "innoscripta", "-U", "innoscripta"]
+            test: ["CMD", "pg_isready", "-q", "-d", "news-app", "-U", "news-app"]
             retries: 3
             timeout: 5s
 networks:
-    innoscripta:
+    news-app:
         driver: bridge
 volumes:
-    innoscripta-pgsql:
+    news-app-pgsql:
         driver: local
