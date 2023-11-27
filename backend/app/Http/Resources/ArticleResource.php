@@ -27,6 +27,7 @@ class ArticleResource extends JsonResource
             'is_category_liked' => $this->is_category_favorised,
             'author' => new AuthorResource($this->author),
             'source' => new SourceResource($this->source),
+            'category' => new SourceResource($this->category),
         ];
     }
 }

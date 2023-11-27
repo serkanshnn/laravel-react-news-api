@@ -10,11 +10,11 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 function Articles() {
     const [page, setPage] = React.useState<number>(1)
     const [q, setQ] = React.useState<string>('')
-    const [from, setFrom] = React.useState<Date | string>('')
-    const [to, setTo] = React.useState<Date | string>('')
-    const [categoryId, setCategoryId] = React.useState<number | string>('')
-    const [sourceId, setSourceId] = React.useState<number | string>('')
-    const [authorId, setAuthorId] = React.useState<number | string>('')
+    const [from, setFrom] = React.useState<string>('')
+    const [to, setTo] = React.useState<string>('')
+    const [categoryId, setCategoryId] = React.useState<string>('')
+    const [sourceId, setSourceId] = React.useState<string>('')
+    const [authorId, setAuthorId] = React.useState<string>('')
     const location = useLocation();
     const navigate = useNavigate();
 
