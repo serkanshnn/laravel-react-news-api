@@ -14,7 +14,7 @@ const Register = () => {
     const response: { data: { message: string } } = error?.response as { data: { message: string } };
 
     if (mutation.isSuccess) {
-        const result: {token: string, email: string} = mutation.data.data;
+        const result: {token: string, email: string} = mutation.data.data.data;
         localStorage.setItem('accessToken', result.token);
 
         window.location.href = '/'
